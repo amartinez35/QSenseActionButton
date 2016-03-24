@@ -1,8 +1,43 @@
-define(["css!./QSenseActionButton.css", "qlik"],
+define(['css!./QSenseActionButton.css', 'qlik', 'ng!$q'],
 
-  function(template, qlik) {
+  function(template, qlik, $q) {
     "use strict";
     //palette de couleur par défaut
+    
+    var Test = qlik.currApp(this);
+    var getSheetList = function () {
+
+		var defer = $q.defer();
+
+		Test.getAppObjectList( function ( data ) {
+			var sheets = [];
+			var sortedData = _.sortBy( data.qAppObjectList.qItems, function ( item ) {
+				return item.qData.rank;
+			} );
+			_.each( sortedData, function ( item ) {
+				sheets.push( {
+					value: item.qInfo.qId,
+					label: item.qMeta.title
+				} );
+			} );
+			return defer.resolve( sheets );
+		} );
+
+		return defer.promise;
+	};
+    
+    var dropSheet = {
+      ref: "dropSheet",
+      type: "string",
+      label: "Liste des feuilles",
+      component: "dropdown",
+      options: function () {
+			return getSheetList().then( function ( items ) {
+				return items;
+			} );
+		}
+    };
+    
     var palette = [
       "#b0afae",
       "#7b7a78",
@@ -63,6 +98,9 @@ define(["css!./QSenseActionButton.css", "qlik"],
       }, {
         value: "prevSheet",
         label: "Feuille précédente"
+      }, {
+        value: "selectSheet",
+        label: "Activer la feuille"
       }],
       defaultValue: "clearAll"
     };
@@ -70,12 +108,12 @@ define(["css!./QSenseActionButton.css", "qlik"],
     var zone1 = {
       type: "string",
       ref: "zoneAction1",
-      label: "Zone1"
+      label: "Nom variable / champ"
     };
     var zone2 = {
       type: "string",
       ref: "zoneAction2",
-      label: "Zone2"
+      label: "Valeur"
     };
 
     //définition de l'objet
@@ -117,6 +155,7 @@ define(["css!./QSenseActionButton.css", "qlik"],
                 label: "Action",
                 items: {
                   dropAction: dropAction,
+                  dropSheet: dropSheet,
                   zone1: zone1,
                   zone2: zone2
                 }
@@ -186,6 +225,9 @@ define(["css!./QSenseActionButton.css", "qlik"],
               break;
             case 'prevSheet':
               qlik.navigation.prevSheet();
+              break;
+            case 'selectSheet':
+              qlik.navigation.gotoSheet(layout.dropSheet);
               break;
           }
         });
