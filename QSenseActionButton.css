@@ -23,23 +23,14 @@
  OTHER DEALINGS IN THE SOFTWARE.
  */
 
-.qv-object-QSenseActionButton .background {
-    fill: #FFFFFF;
-    fill-opacity: 0;
+.qv-object-QSenseActionButton .button {
+    border: none;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+    border-radius: 4px;
 }
-
-.qv-object-QSenseActionButton .component {
-    fill: #e1e1e1;
-}
-
-.qv-object-QSenseActionButton .label {
-    text-anchor: middle;
-}
-    
-.qv-object-QSenseActionButton .arc {
-    stroke-weight: 0;
-}
-
-.qv-object-QSenseActionButton .arc2 {
-    stroke-weight: 0;
+.qv-object-QSenseActionButton .button:active {
+  transform: translateY(1px);
 }
