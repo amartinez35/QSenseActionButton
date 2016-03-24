@@ -60,9 +60,8 @@ define(['css!./QSenseActionButton.css', 'qlik', 'ng!$q'],
     var colorTextDef = {
       ref: "ctext",
       type: "integer",
-      translation: "properties.color",
       component: "color-picker",
-      label: "Text",
+      label: "Couleur du texte",
       defaultValue: 10
     };
 
@@ -70,9 +69,8 @@ define(['css!./QSenseActionButton.css', 'qlik', 'ng!$q'],
     var colorBgDef = {
       ref: "cBg",
       type: "integer",
-      translation: "properties.color",
       component: "color-picker",
-      label: "Bg",
+      label: "Couleur de fond",
       defaultValue: 3
     };
 
@@ -135,7 +133,7 @@ define(['css!./QSenseActionButton.css', 'qlik', 'ng!$q'],
     var switchBold ={
       type: "string",
       component: "buttongroup",
-      label: "Orientation buttons",
+      label: "Police",
       ref: "switchFont",
       options: [{
 	    value: "normal",
@@ -148,6 +146,18 @@ define(['css!./QSenseActionButton.css', 'qlik', 'ng!$q'],
       }],
 		defaultValue: "normal"
     };
+    
+    //slider font size
+    var sliderFontS = {
+      type: "integer",
+      component: "slider",
+      label: "Taille de la police",
+      ref: "sliderFontS",
+      min: 8,
+      max: 50,
+	  step: 1,
+      defaultValue: 16
+    }
 
     //définition de l'objet
     return {
@@ -177,6 +187,7 @@ define(['css!./QSenseActionButton.css', 'qlik', 'ng!$q'],
                 label: "Look & feel",
                 items: {
                   textLabel: textLabel,
+                  sliderFontS: sliderFontS,
                   switchBold: switchBold,
                   Colors1: colorTextDef,
                   Colors2: colorBgDef
@@ -206,7 +217,7 @@ define(['css!./QSenseActionButton.css', 'qlik', 'ng!$q'],
         //Taille de l'objet
         var width = $element.width() - 10;
         var height = $element.height() - 10;
-        var fonSize = 16;
+        var fonSize = layout.sliderFontS;
 
         var id = "container_" + layout.qInfo.qId;
 

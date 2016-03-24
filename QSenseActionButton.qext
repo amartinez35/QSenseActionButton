@@ -1,7 +1,7 @@
 {
 	"name" : "QSense Action Button",
 	"description" : "QSense action button",
-	"icon" : "gauge-chart",
+	"icon" : "text-image",
 	"type" : "visualization",
 	"version": "0.0.1",
 	"author": "",
