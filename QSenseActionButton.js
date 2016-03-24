@@ -176,11 +176,12 @@ define(['css!./QSenseActionButton.css', 'qlik', 'ng!$q'],
         component: "accordion",
 
         items: {
-          //nombre de mesure
+          //définition du panneau de config
           Setting: {
             component: "expandable-items",
             label: "Configuration",
             items: {
+                //look and feel du bouton
               ValeurText: {
                 ref: "valeurMenu",
                 type: "items",
@@ -193,6 +194,7 @@ define(['css!./QSenseActionButton.css', 'qlik', 'ng!$q'],
                   Colors2: colorBgDef
                 }
               },
+                //action
               MyDropdownProp: {
                 ref: "Action",
                 type: "items",
@@ -235,7 +237,7 @@ define(['css!./QSenseActionButton.css', 'qlik', 'ng!$q'],
         var colorText = palette[layout.ctext];
         var colorBg = palette[layout.cBg];
 
-        //génération du bouton
+        //génération du bouton, on doit pouvoir faure mieux...
         var myButton = '<button class="button" style="font-size:' + fonSize + 'px;background-color:' + colorBg + ';color:' + colorText + ';width:' + width + 'px;height:' + height + 'px;font-weight:'+layout.switchFont+'">' + layout.valueText + '</button>';
         div.innerHTML = myButton;
 
