@@ -23,7 +23,7 @@
  OTHER DEALINGS IN THE SOFTWARE.
  */
 
-.qv-object-QSenseActionButton .button {
+.qv-object-QSenseMultiActionButton .button {
     border: none;
     text-align: center;
     text-decoration: none;
@@ -31,6 +31,6 @@
     cursor: pointer;
     border-radius: 4px;
 }
-.qv-object-QSenseActionButton .button:active {
+.qv-object-QSenseMultiActionButton .button:active {
     transform: translateY(1px);
 }

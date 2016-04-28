@@ -1,6 +1,6 @@
 {
-	"name" : "QSense Action Button",
-	"description" : "QSense action button",
+	"name" : "QSense multi-Action Button",
+	"description" : "QSense multi-action button",
 	"icon" : "text-image",
 	"type" : "visualization",
 	"version": "0.0.1",

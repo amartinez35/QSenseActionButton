@@ -1,4 +1,4 @@
-define(['css!./QSenseActionButton.css', 'qlik', 'ng!$q'],
+define(['css!./QSenseMultiActionButton.css', 'qlik', 'ng!$q'],
 
   function(template, qlik, $q) {
     "use strict";
@@ -128,25 +128,25 @@ define(['css!./QSenseActionButton.css', 'qlik', 'ng!$q'],
       ref: "zoneAction2",
       label: "Valeur"
     };
-    
+
     //switch bold  normal
-    var switchBold ={
+    var switchBold = {
       type: "string",
       component: "buttongroup",
       label: "Police",
       ref: "switchFont",
       options: [{
-	    value: "normal",
-		label: "Normal",
-		tooltip: "Select for vertical"
+        value: "normal",
+        label: "Normal",
+        tooltip: "Select for vertical"
       }, {
         value: "bold",
-		label: "Gras",
-		tooltip: "Select for vertical"
+        label: "Gras",
+        tooltip: "Select for vertical"
       }],
-		defaultValue: "normal"
+      defaultValue: "normal"
     };
-    
+
     //slider font size
     var sliderFontS = {
       type: "integer",
@@ -154,9 +154,18 @@ define(['css!./QSenseActionButton.css', 'qlik', 'ng!$q'],
       label: "Taille de la police",
       ref: "sliderFontS",
       min: 8,
-      max: 50,
-	  step: 1,
+      max: 30,
+      step: 1,
       defaultValue: 16
+    }
+    
+    function sleep(milliseconds) {
+      var start = new Date().getTime();
+      for (var i = 0; i < 1e7; i++) {
+        if ((new Date().getTime() - start) > milliseconds){
+        break;
+      }
+     } 
     }
 
     //définition de l'objet
@@ -180,8 +189,9 @@ define(['css!./QSenseActionButton.css', 'qlik', 'ng!$q'],
           Setting: {
             component: "expandable-items",
             label: "Configuration",
+
             items: {
-                //look and feel du bouton
+              //look and feel du bouton
               ValeurText: {
                 ref: "valeurMenu",
                 type: "items",
@@ -194,11 +204,15 @@ define(['css!./QSenseActionButton.css', 'qlik', 'ng!$q'],
                   Colors2: colorBgDef
                 }
               },
-                //action
+              //action
               MyDropdownProp: {
-                ref: "Action",
-                type: "items",
+                type: "array",
+                ref: "listeAction",
                 label: "Action",
+                //itemTitleRef: "Action",
+                allowAdd: true,
+                allowRemove: true,
+                addTranslation: "Ajouter une action",
                 items: {
                   dropAction: dropAction,
                   dropSheet: dropSheet,
@@ -238,38 +252,42 @@ define(['css!./QSenseActionButton.css', 'qlik', 'ng!$q'],
         var colorBg = palette[layout.cBg];
 
         //génération du bouton, on doit pouvoir faure mieux...
-        var myButton = '<button class="button" style="font-size:' + fonSize + 'px;background-color:' + colorBg + ';color:' + colorText + ';width:' + width + 'px;height:' + height + 'px;font-weight:'+layout.switchFont+'">' + layout.valueText + '</button>';
+        var myButton = '<button class="button" style="font-size:' + fonSize + 'px;background-color:' + colorBg + ';color:' + colorText + ';width:' + width + 'px;height:' + height + 'px;font-weight:' + layout.switchFont + '">' + layout.valueText + '</button>';        
         div.innerHTML = myButton;
 
         //traitement des actions si on est en mode analysis
         if (qlik.navigation.getMode() == 'analysis') {
           $element.find("button").on("qv-activate", function() {
-            switch (layout.myAction) {
-              case 'clearAll':
-                app.clearAll();
-                break;
-              case 'lockAll':
-                app.lockAll();
-                break;
-              case 'lockOne':
-                app.field(layout.zoneAction1).lock();
-                break;
-              case 'selectOne':
-                app.field(layout.zoneAction1).selectValues([layout.zoneAction2], false, false);
-                break;
-              case 'setVar':
-                app.variable.setStringValue(layout.zoneAction1, layout.zoneAction2);
-                break;
-              case 'nextSheet':
-                qlik.navigation.nextSheet();
-                break;
-              case 'prevSheet':
-                qlik.navigation.prevSheet();
-                break;
-              case 'selectSheet':
-                qlik.navigation.gotoSheet(layout.dropSheet);
-                break;
+            for (var i = 0; i < layout.listeAction.length; i++) {
+              console.log(layout.listeAction[i]);
+              switch (layout.listeAction[i].myAction) {
+                case 'clearAll':
+                  app.clearAll();
+                  break;
+                case 'lockAll':
+                  app.lockAll();
+                  break;
+                case 'lockOne':
+                  app.field(layout.listeAction[i].zoneAction1).lock();
+                  break;
+                case 'selectOne':
+                  app.field(layout.listeAction[i].zoneAction1).selectValues([layout.listeAction[i].zoneAction2], false, false);
+                  break;
+                case 'setVar':
+                  app.variable.setStringValue(layout.listeAction[i].zoneAction1, layout.listeAction[i].zoneAction2);
+                  break;
+                case 'nextSheet':
+                  qlik.navigation.nextSheet();
+                  break;
+                case 'prevSheet':
+                  qlik.navigation.prevSheet();
+                  break;
+                case 'selectSheet':
+                  qlik.navigation.gotoSheet(layout.listeAction[i].dropSheet);
+                  break;
+              }
             }
+
           });
         }
       }
